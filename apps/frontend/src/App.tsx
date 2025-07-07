@@ -5,7 +5,7 @@ interface Todo {
   title: string;
   completed: boolean;
 }
-const isDev = import.meta.env.NODE_ENV === "development";
+const isDev = import.meta.env.VITE_ENV === "development";
 const API_URL = isDev ? "http://localhost:3000/graphql" : "/api/graphql";
 
 function App() {
@@ -13,6 +13,8 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   const fetchTodos = async () => {
+    console.log('API_URL', API_URL)
+    console.log('import.meta.env.VITE_ENV', import.meta.env.VITE_ENV)
     setLoading(true);
     try {
       const res = await fetch(API_URL, {
@@ -45,7 +47,7 @@ function App() {
         <ul>
           {todos.map((todo) => (
             <li key={todo.id}>
-              {todo.title} {todo.completed ? "✅" : ""}
+              {todo.title} {todo.completed ? "✅" : "❌"}
             </li>
           ))}
         </ul>
