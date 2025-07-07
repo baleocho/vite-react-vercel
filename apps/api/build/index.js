@@ -57,30 +57,10 @@ const server = new ApolloServer({
     typeDefs,
     resolvers,
 });
-async function start() {
-    await server.start();
-    app.use(express.static(path.join(__dirname, "dist")));
-    app.use("/graphql", bodyParser.json(), expressMiddleware(server));
-    app.listen(PORT, () => {
-        console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
-    });
-}
-start();
-// async function startApolloServer() {
-//   const app = express();
-//   //const httpServer = http.createServer(app);
-//   const server = new ApolloServer({
-//     typeDefs,
-//     resolvers,
-//   });
-//   await server.start();
-//   app.use(
-//     '/graphql',
-//     bodyParser.json(),
-//     expressMiddleware(server) as unknown as import('express').RequestHandler
-//   );
-//   app.listen(3000, () => {
-//     console.log('🚀 Server ready at http://localhost:3000/graphql');
-//   });
-// }
-// startApolloServer();
+await server.start();
+app.use(express.static(path.join(__dirname, "dist")));
+app.use("/graphql", bodyParser.json(), expressMiddleware(server));
+app.listen(PORT, () => {
+    console.log(`Front end at http://localhost:${PORT}/`);
+    console.log(`GraphQL server ready at http://localhost:${PORT}/graphql`);
+});

@@ -68,7 +68,6 @@ const server = new ApolloServer({
   resolvers,
 });
 
-async function start() {
   await server.start();
   app.use(express.static(path.join(__dirname, "dist")));
   app.use(
@@ -80,6 +79,3 @@ async function start() {
     console.log(`Front end at http://localhost:${PORT}/`);
     console.log(`GraphQL server ready at http://localhost:${PORT}/graphql`);
   });
-}
-
-start();
