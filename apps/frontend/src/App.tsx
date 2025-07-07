@@ -5,7 +5,7 @@ interface Todo {
   title: string;
   completed: boolean;
 }
-const isDev = import.meta.env.VITE_ENV === "development";
+const isDev = import.meta.env.VITE_APP_ENV === "development";
 const API_URL = isDev ? "http://localhost:3000/graphql" : "/graphql";
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
 
   const fetchTodos = async () => {
     console.log('API_URL', API_URL)
-    console.log('import.meta.env.VITE_ENV', import.meta.env.VITE_ENV)
+    console.log('import.meta.env.VITE_ENV', import.meta.env.VITE_APP_ENV)
     setLoading(true);
     try {
       const res = await fetch(API_URL, {
