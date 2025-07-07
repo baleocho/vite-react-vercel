@@ -6,7 +6,7 @@ interface Todo {
   completed: boolean;
 }
 const isDev = import.meta.env.VITE_ENV === "development";
-const API_URL = isDev ? "http://localhost:3000/graphql" : "/api/graphql";
+const API_URL = isDev ? "http://localhost:3000/graphql" : "/graphql";
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
