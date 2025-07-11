@@ -5,7 +5,8 @@ interface Todo {
   title: string;
   completed: boolean;
 }
-const isDev = import.meta.env.VITE_APP_ENV === "development";
+
+const isDev = import.meta.env.DEV;
 const API_URL = isDev ? "http://localhost:3000/graphql" : "/graphql";
 
 function App() {
@@ -64,6 +65,8 @@ function App() {
       <h1>Neon + Express Apollo + Vercel</h1>
       <h4 className="m-0 p-0">API_URL {API_URL}</h4>
       <h4 className="m-0 p-0">Environment: {import.meta.env.VITE_APP_ENV}</h4>
+      <h4 className="m-0 p-0">Version: {import.meta.env.VITE_APP_VERSION}</h4>
+      <h4 className="m-0 p-0">Is Dev: {isDev}</h4>
       <div className="d-flex gap-1 mt-2">
         <div className="col-12 col-md-6 h-100">
           <div className="card">
