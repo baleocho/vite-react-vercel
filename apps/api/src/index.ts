@@ -7,8 +7,6 @@ import "dotenv/config";
 import cors from "cors";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
-import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
-import http from "http";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -18,7 +16,6 @@ interface MyContext {
 
 const PORT = process.env.PORT || 3000;
 const app = express();
-const httpServer = http.createServer(app);
 
 app.use(bodyParser.json());
 app.use(
@@ -72,8 +69,7 @@ const resolvers = {
 
 const server = new ApolloServer<MyContext>({
   typeDefs,
-  resolvers,
-  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  resolvers
 });
 
 await server.start();
@@ -87,8 +83,7 @@ app.use(
   })
 );
 
-await new Promise<void>((resolve) =>
-  httpServer.listen({ port: PORT }, resolve)
-);
-console.log(`Front end at http://localhost:${PORT}/`);
-console.log(`GraphQL server ready at http://localhost:${PORT}/graphql`);
+app.listen(PORT, () => {
+  console.log(`Front end at http://localhost:${PORT}/`);
+  console.log(`GraphQL server ready at http://localhost:${PORT}/graphql`);
+});
