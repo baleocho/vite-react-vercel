@@ -7,11 +7,13 @@ import "dotenv/config";
 import cors from "cors";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
+import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
+import http from "http";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-console.log("process.env.DATABASE_URL", process.env.DATABASE_URL);
 const PORT = process.env.PORT || 3000;
 const app = express();
+const httpServer = http.createServer(app);
 app.use(bodyParser.json());
 app.use(cors({
     origin: "*", // Allow all origins for development; adjust as needed for production
@@ -56,11 +58,13 @@ const resolvers = {
 const server = new ApolloServer({
     typeDefs,
     resolvers,
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
 await server.start();
 app.use(express.static(path.join(__dirname, "dist")));
-app.use("/graphql", bodyParser.json(), expressMiddleware(server));
-app.listen(PORT, () => {
-    console.log(`Front end at http://localhost:${PORT}/`);
-    console.log(`GraphQL server ready at http://localhost:${PORT}/graphql`);
-});
+app.use("/graphql", cors(), express.json(), expressMiddleware(server, {
+    context: async ({ req }) => ({ token: req.headers.token }),
+}));
+await new Promise((resolve) => httpServer.listen({ port: PORT }, resolve));
+console.log(`Front end at http://localhost:${PORT}/`);
+console.log(`GraphQL server ready at http://localhost:${PORT}/graphql`);
